@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import 'dotenv/config';
+
+const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN
 
 const GameScreen = () => {
   return (
