@@ -18,7 +18,7 @@ const GameScreen = () => {
   };
 
   useEffect(() => {
-    const fetchRandomImage = async () => {
+    const fetchRandomImageAndInitViewer = async () => {
       setLoading(true);
       const maxAttempts = 100;
       let attempt = 0;
@@ -65,13 +65,22 @@ const GameScreen = () => {
             container: 'mly',
             imageKey: imageKey,
           })
+        } else {
+          viewerRef.current.moveTo(imageKey);
         }
       }
 
       setLoading(false);
     };
 
-    fetchRandomImage();
+    fetchRandomImageAndInitViewer();
+
+    return () => {
+      if(viewerRef.current) {
+        viewerRef.current.remove();
+        viewerRef.current = null;
+      }
+    }
   }, []);
 
   return (
