@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import { Viewer } from 'mapillary-js';
+import '../assets/loader.css'
 
 const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN;
 
 const GameScreen = () => {
-  const [imageUrl, setImageUrl] = useState(null);
+  const viewerRef = useRef(null);
   const [loading, setLoading] = useState(true);
 
   // Function to generate random coordinates within a given range.
@@ -18,10 +20,10 @@ const GameScreen = () => {
   useEffect(() => {
     const fetchRandomImage = async () => {
       setLoading(true);
-      const maxAttempts = 10;
+      const maxAttempts = 100;
       let attempt = 0;
       let found = false;
-      let fetchedImageUrl = null;
+      let imageKey = null;
       const delta = 0.02; // size of bbox (adjust as needed)
 
       while (!found && attempt < maxAttempts) {
@@ -44,9 +46,7 @@ const GameScreen = () => {
 
           if (res.data.data && res.data.data.length > 0) {
             const imageData = res.data.data[0];
-            fetchedImageUrl = imageData.thumb_2048_url
-              ? imageData.thumb_2048_url
-              : `https://images.mapillary.com/${imageData.id}/thumb-2048.jpg`;
+            imageKey = imageData.id;
             found = true;
           } else {
             console.error(`Attempt ${attempt}: No images found for bbox ${bbox}`);
@@ -59,7 +59,13 @@ const GameScreen = () => {
       if (!found) {
         console.error('No imagery found after maximum attempts.');
       } else {
-        setImageUrl(fetchedImageUrl);
+        if( !viewerRef.current ) {
+          viewerRef.current = new Viewer({
+            accessToken: MAPILLARY_TOKEN,
+            container: 'mly',
+            imageKey: imageKey,
+          })
+        }
       }
 
       setLoading(false);
@@ -71,17 +77,16 @@ const GameScreen = () => {
   return (
     <div className="game-screen h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">
       <div className="street-view-container w-screen h-full bg-black flex items-center justify-center">
-        {loading ? (
-          <span className="text-white">Loading...</span>
-        ) : imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="Mapillary Street View"
+          <div
+            id='mly'
             className="object-cover h-full w-full"
-          />
-        ) : (
-          <span className="text-white">No imagery available.</span>
-        )}
+          >
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="loader"></div>
+              </div>
+            )}
+          </div>
       </div>
     </div>
   );
