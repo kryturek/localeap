@@ -5,32 +5,42 @@ import 'leaflet/dist/leaflet.css'
 const ExpandableMap = () => {
   const mapRef = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
-  let guessMarker = useRef(null)
+  const guessMarker = useRef(null)
+  const mapInstance = useRef(null)
+
 
   useEffect(() => {
-	const map = L.map(mapRef.current, {
+	mapInstance.current = L.map(mapRef.current, {
 		center: [20, 0],
 		zoom: 2,
 		attributionControl: false,
-		zoomControl: false,
+		zoomControl: false
 	})
 
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19, }).addTo(map);
+		maxZoom: 19, }).addTo(mapInstance.current);
 
-	map.on('click', (e) => {
+	mapInstance.current.on('click', (e) => {
 		if(guessMarker.current) {
-			map.removeLayer(guessMarker.current)
+			mapInstance.current.removeLayer(guessMarker.current)
 		}
-		guessMarker.current = L.marker(e.latlng).addTo(map)
+		guessMarker.current = L.marker(e.latlng).addTo(mapInstance.current)
 	})
 
 	return () => {
-		map.remove();
+		mapInstance.current.remove();
 		console.log('Map component unmounted');
 	}
 
 	}, [])
+
+	useEffect(() => {
+		if (mapInstance.current) {
+			setTimeout(() => {
+				mapInstance.current.invalidateSize();
+			}, 330)
+		}
+	}, [isHovered])
 
   return (
 	<div 
