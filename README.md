@@ -1,12 +1,13 @@
-# React + Vite
+# LocaLeap
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The name is supposed to sound like a mash of locality and leap. It's also the part of this project that I'm the most proud of.
 
-Currently, two official plugins are available:
+# Why?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Because a certain street view guessing game is one of my favourites. It's a very simple concept too, which makes me want to discover how it works exactly and build my own version of it from the scratch.
 
-## Expanding the ESLint configuration
+# What is different about this one?
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Google Maps is obviously the king of geolocation and all that jazz, but whenever you want to create a project or use those services in any other way than using the maps as any normal person, you hit a paywall. Well, not exactly WHENEVER, they do give you a free trial and free monthly quota, but it's all a bit confusing if you're not very experienced (like me) and difficult to set limits so you don't accidentally get charged.
+
+In this project I use open-source and free alternatives to Google Maps. Mapillary is a service that provides crowdsourced geotagged photos, similar to Google's street view. OpenStreetMap provides the map tiles which are then processed and put on a grid with Leaflet.js, so the clicked coordinates can then be compared to where the Mapillary photo was taken.
