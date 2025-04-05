@@ -27,13 +27,14 @@ const ExpandableMap = () => {
 
 	return () => {
 		map.remove();
+		console.log('Map component unmounted');
 	}
 
-	})
+	}, [])
 
   return (
 	<div 
-	  className='map-container absolute bottom-4 right-4 w-36 h-36 hover:w-156 hover:h-124 transition-all duration-300 opacity-70 hover:opacity-100'
+	  className='map-container absolute bottom-4 right-4 w-36 h-36 hover:w-156 hover:h-124 transition-all duration-300 opacity-70 hover:opacity-100 z-10'
 	  onMouseEnter={() => setIsHovered(true)}
 	  onMouseLeave={() => setIsHovered(false)}
 	>
@@ -43,7 +44,7 @@ const ExpandableMap = () => {
 			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md hover:bg-green-600 z-1000"
 			onClick={() => {
 				if (guessMarker.current) {
-					console.log('Submitting coordinates:', guessMarker.getLatLng());
+					console.log('Submitting coordinates:', guessMarker.current.getLatLng());
 					// logic to submit the guess
 				} else {
 					alert('Please select a location on the map first');
