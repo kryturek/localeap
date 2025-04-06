@@ -8,6 +8,7 @@ const ExpandableMap = () => {
   const [isHovered, setIsHovered] = useState(false)
   const guessMarker = useRef(null)
   const mapInstance = useRef(null)
+  const [hasMarker, setHasMarker] = useState(false)
 
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const ExpandableMap = () => {
 			mapInstance.current.removeLayer(guessMarker.current)
 		}
 		guessMarker.current = L.marker(e.latlng).addTo(mapInstance.current)
+		setHasMarker(true)
 	})
 
 	return () => {
@@ -42,6 +44,7 @@ const ExpandableMap = () => {
 			}, 330)
 		}
 	}, [isHovered])
+	
 
   return (
 	<div 
@@ -52,13 +55,12 @@ const ExpandableMap = () => {
 		<div ref={mapRef} className="w-full h-full rounded-lg shadow-lg"></div>
 		{isHovered && (
 			<button 
-			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md hover:bg-green-600 z-1000 cursor-pointer font-mono"
+			disabled={!hasMarker}
+			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md shadow-emerald-500 hover:bg-green-600 z-1000 cursor-pointer font-mono font-bold border-3 border-white"
 			onClick={() => {
 				if (guessMarker.current) {
 					console.log('Submitting coordinates:', guessMarker.current.getLatLng());
 					// logic to submit the guess
-				} else {
-					alert('Please select a location on the map first');
 				}
 			}}
 			>

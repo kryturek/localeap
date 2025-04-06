@@ -24,7 +24,7 @@ const GameScreen = () => {
       let attempt = 0;
       let found = false;
       let imageKey = null;
-      const delta = 0.02; // size of bbox (adjust as needed)
+      const delta = 0.03; // size of bbox (adjust as needed)
 
       while (!found && attempt < maxAttempts) {
         attempt++;
