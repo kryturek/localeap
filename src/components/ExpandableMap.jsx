@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import '../leaflet-custom.css'
 
 const ExpandableMap = () => {
   const mapRef = useRef(null)
@@ -51,7 +52,7 @@ const ExpandableMap = () => {
 		<div ref={mapRef} className="w-full h-full rounded-lg shadow-lg"></div>
 		{isHovered && (
 			<button 
-			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md hover:bg-green-600 z-1000"
+			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md hover:bg-green-600 z-1000 cursor-pointer font-mono"
 			onClick={() => {
 				if (guessMarker.current) {
 					console.log('Submitting coordinates:', guessMarker.current.getLatLng());
