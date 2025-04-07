@@ -3,7 +3,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import '../leaflet-custom.css'
 
-const ExpandableMap = () => {
+const ExpandableMap = ({setGuessMarker}) => {
   const mapRef = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
   const guessMarker = useRef(null)

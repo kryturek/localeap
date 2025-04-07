@@ -5,7 +5,7 @@ import '../assets/loader.css'
 
 const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN;
 
-const GameScreen = () => {
+const GameScreen = ({setCurrentCoordinates}) => {
   const viewerRef = useRef(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,7 @@ const GameScreen = () => {
             {
               params: {
                 access_token: MAPILLARY_TOKEN,
-                fields: 'id,thumb_2048_url',
+                fields: 'id,thumb_2048_url,computed_geometry',
                 limit: 1,
                 bbox,
               },
@@ -48,6 +48,7 @@ const GameScreen = () => {
             const imageData = res.data.data[0];
             imageKey = imageData.id;
             found = true;
+            console.log(res.data)
           } else {
             console.error(`Attempt ${attempt}: No images found for bbox ${bbox}`);
           }
