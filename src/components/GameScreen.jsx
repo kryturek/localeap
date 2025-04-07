@@ -69,7 +69,22 @@ const GameScreen = ({setCurrentCoordinates}) => {
             accessToken: MAPILLARY_TOKEN,
             container: 'mly',
             imageKey: imageKey,
-          })
+            component: {
+              cover: false,
+              direction: false,
+              sequence: false,
+              zoom: false,
+              attribution: false,
+              bearing: false,
+              spatial: false,
+              tag: false,
+              popup: false,
+              image: true,
+              navigation: false,
+              cache: true,
+              keyboard: false
+            }
+          });
         } else {
           viewerRef.current.moveTo(imageKey);
         }
