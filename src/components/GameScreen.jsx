@@ -48,7 +48,11 @@ const GameScreen = ({setCurrentCoordinates}) => {
             const imageData = res.data.data[0];
             imageKey = imageData.id;
             found = true;
-            console.log(res.data)
+            console.log(imageData.computed_geometry.coordinates);
+            setCurrentCoordinates({
+              lat: imageData.computed_geometry.coordinates[1],
+              lon: imageData.computed_geometry.coordinates[0],
+            });
           } else {
             console.error(`Attempt ${attempt}: No images found for bbox ${bbox}`);
           }
