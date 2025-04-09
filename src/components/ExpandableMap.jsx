@@ -59,8 +59,7 @@ const ExpandableMap = ({setGuessMarker}) => {
 			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md shadow-emerald-500 hover:bg-green-600 z-1000 cursor-pointer font-mono font-bold border-3 border-white"
 			onClick={() => {
 				if (guessMarker.current) {
-					console.log('Submitting coordinates:', guessMarker.current.getLatLng());
-					// logic to submit the guess
+					setGuessMarker(guessMarker.current.getLatLng())
 				}
 			}}
 			>

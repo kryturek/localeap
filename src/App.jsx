@@ -15,9 +15,16 @@ function App() {
 
   useEffect(() => {
     if (currentCoordinates) {
-      console.log('Current Coordinates:', currentCoordinates)
+      console.log('Current Image Coordinates:', currentCoordinates)
     }
   }, [currentCoordinates])
+
+  useEffect(() => {
+    if (guessMarker) {
+      console.log('Guess Marker Coordinates:', guessMarker)
+    }
+  }
+  , [guessMarker])
 
   return (
     <>
