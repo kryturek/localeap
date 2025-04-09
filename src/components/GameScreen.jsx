@@ -40,6 +40,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
                 fields: 'id,thumb_2048_url,computed_geometry',
                 limit: 1,
                 bbox,
+                is_pano: true
               },
             }
           );
