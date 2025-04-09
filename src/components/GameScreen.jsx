@@ -12,8 +12,8 @@ const GameScreen = ({setCurrentCoordinates}) => {
   // Function to generate random coordinates within a given range.
   const getRandomCoordinates = () => {
     // Define the region: lat between 35 and 60, lon between -10 and 40
-    const lat = Math.random() * (60 - 35) + 35;
-    const lon = Math.random() * (40 - (-10)) + (-10);
+    const lat = Math.random() * 120 - 60; // lat between -60 and 60
+    const lon = Math.random() * 360 - 180; // lon between -180 and 180
     return { lat, lon };
   };
 
@@ -24,7 +24,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
       let attempt = 0;
       let found = false;
       let imageKey = null;
-      const delta = 0.03; // size of bbox (adjust as needed)
+      const delta = 3; // size of bbox (adjust as needed)
 
       while (!found && attempt < maxAttempts) {
         attempt++;
