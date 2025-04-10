@@ -14,17 +14,18 @@ function App() {
   }
 
   useEffect(() => {
-    if (currentCoordinates) {
+    // if user has guessed
+    if (guessMarker && currentCoordinates) {
       console.log('Current Image Coordinates:', currentCoordinates)
-    }
-  }, [currentCoordinates])
-
-  useEffect(() => {
-    if (guessMarker) {
       console.log('Guess Marker Coordinates:', guessMarker)
+
+      console.log('Distance:', Math.sqrt(
+        Math.pow(currentCoordinates.lat - guessMarker.lat, 2) +
+        Math.pow(currentCoordinates.lon - guessMarker.lng, 2)
+      ).toFixed(2))
     }
   }
-  , [guessMarker])
+  , [currentCoordinates, guessMarker])
 
   return (
     <>
