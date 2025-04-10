@@ -101,7 +101,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
         viewerRef.current = null;
       }
     }
-  }, []);
+  }, [setCurrentCoordinates]);
 
   return (
     <div className="game-screen h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">

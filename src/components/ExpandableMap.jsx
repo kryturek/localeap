@@ -53,9 +53,8 @@ const ExpandableMap = ({setGuessMarker}) => {
 	  onMouseLeave={() => setIsHovered(false)}
 	>
 		<div ref={mapRef} className="w-full h-full rounded-lg shadow-lg"></div>
-		{isHovered && (
+		{isHovered && hasMarker && (
 			<button 
-			disabled={!hasMarker}
 			className="absolute bottom-4 left-4 mt-2 px-4 py-2 bg-green-500 text-white rounded shadow-md shadow-emerald-500 hover:bg-green-600 z-1000 cursor-pointer font-mono font-bold border-3 border-white"
 			onClick={() => {
 				if (guessMarker.current) {
