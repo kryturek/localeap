@@ -3,14 +3,21 @@ import './App.css'
 import ExpandableMap from './components/ExpandableMap'
 import GameScreen from './components/GameScreen'
 import StartScreen from './components/StartScreen'
+import ResultDialog from './components/ResultDialog'
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false)
   const [currentCoordinates, setCurrentCoordinates] = useState(null)
-  const [guessMarker, setGuessMarker] = useState({ lat: 0, lon: 0 })
+  const [guessMarker, setGuessMarker] = useState(null)
+  const [showResultDialog, setShowResultDialog] = useState(false)
+  const [distance, setDistance] = useState(null)
 
   const startGame = () => {
     setGameStarted(true)
+    setShowResultDialog(false)
+    setDistance(null)
+    setGuessMarker(null)
+    setCurrentCoordinates(null)
   }
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -31,12 +38,15 @@ function App() {
       console.log('Current Image Coordinates:', currentCoordinates)
       console.log('Guess Marker Coordinates:', guessMarker)
 
-      console.log('Distance:', calculateDistance(
+      const calculatedDistance = calculateDistance(
         currentCoordinates.lat,
         currentCoordinates.lon,
         guessMarker.lat,
         guessMarker.lng
-      ).toFixed(2))
+      ).toFixed(2)
+
+      setDistance(calculatedDistance)
+      setShowResultDialog(true)
     }
   }
   , [currentCoordinates, guessMarker])
@@ -47,6 +57,12 @@ function App() {
       <>
       <GameScreen setCurrentCoordinates={setCurrentCoordinates} />
       <ExpandableMap setGuessMarker={setGuessMarker} />
+      {showResultDialog && (
+        <ResultDialog 
+          distance={distance} 
+          onPlayAgain={startGame} 
+        />
+      )}
       </>
     ) : (
       <StartScreen onStart={startGame} />
