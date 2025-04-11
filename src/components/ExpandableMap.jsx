@@ -15,7 +15,7 @@ const ExpandableMap = ({setGuessMarker}) => {
 	mapInstance.current = L.map(mapRef.current, {
 		center: [20, 0],
 		zoom: 2,
-		attributionControl: false,
+		attribution: '© OpenStreetMap',
 		zoomControl: false
 	})
 

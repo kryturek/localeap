@@ -23,7 +23,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
       let attempt = 0;
       let found = false;
       let imageKey = null;
-      const delta = 3; // size of bbox (adjust as needed)
+      const delta = 5; // size of bbox (adjust as needed)
 
       while (!found && attempt < maxAttempts) {
         attempt++;

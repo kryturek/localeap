@@ -62,7 +62,9 @@ function App() {
       {showResultDialog && (
         <ResultDialog 
           distance={distance} 
-          onPlayAgain={startGame} 
+          onPlayAgain={startGame}
+          actualCoordinates={currentCoordinates}
+          guessCoordinates={guessMarker}
         />
       )}
       </>
