@@ -11,6 +11,7 @@ function App() {
   const [guessMarker, setGuessMarker] = useState(null)
   const [showResultDialog, setShowResultDialog] = useState(false)
   const [distance, setDistance] = useState(null)
+  const [gameKey, setGameKey] = useState(0)
 
   const startGame = () => {
     setGameStarted(true)
@@ -18,6 +19,7 @@ function App() {
     setDistance(null)
     setGuessMarker(null)
     setCurrentCoordinates(null)
+    setGameKey(prevKey => prevKey + 1)
   }
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -55,8 +57,8 @@ function App() {
     <>
     {gameStarted ? (
       <>
-      <GameScreen setCurrentCoordinates={setCurrentCoordinates} />
-      <ExpandableMap setGuessMarker={setGuessMarker} />
+      <GameScreen key={`game-${gameKey}`} setCurrentCoordinates={setCurrentCoordinates} />
+      <ExpandableMap key={`map-${gameKey}`} setGuessMarker={setGuessMarker} />
       {showResultDialog && (
         <ResultDialog 
           distance={distance} 
