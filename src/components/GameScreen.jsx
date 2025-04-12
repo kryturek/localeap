@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Viewer } from 'mapillary-js';
 import '../assets/loader.css'
 
-const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN || "MLY|9650546664967142|03ac0f95e6da6c9ce6847b9c5aed0b96";
+const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN;
 
 const GameScreen = ({setCurrentCoordinates}) => {
   const viewerRef = useRef(null);
@@ -23,7 +23,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
       let attempt = 0;
       let found = false;
       let imageKey = null;
-      const delta = 5;
+      const delta = 5; // size of bbox (adjust as needed)
 
       while (!found && attempt < maxAttempts) {
         attempt++;
@@ -65,28 +65,26 @@ const GameScreen = ({setCurrentCoordinates}) => {
         console.error('No imagery found after maximum attempts.');
       } else {
         if( !viewerRef.current ) {
-          setTimeout(() => {
-            viewerRef.current = new Viewer({
-              accessToken: MAPILLARY_TOKEN,
-              container: 'mly',
-              imageKey: imageKey,
-              component: {
-                cover: false,
-                direction: false,
-                sequence: false,
-                zoom: false,
-                attribution: false,
-                bearing: false,
-                spatial: false,
-                tag: false,
-                popup: false,
-                image: true,
-                navigation: false,
-                cache: true,
-                keyboard: false
-              }
-            })
-          }, 1000);
+          viewerRef.current = new Viewer({
+            accessToken: MAPILLARY_TOKEN,
+            container: 'mly',
+            imageKey: imageKey,
+            component: {
+              cover: false,
+              direction: false,
+              sequence: false,
+              zoom: false,
+              attribution: false,
+              bearing: false,
+              spatial: false,
+              tag: false,
+              popup: false,
+              image: true,
+              navigation: false,
+              cache: true,
+              keyboard: false
+            }
+          });
         } else {
           viewerRef.current.moveTo(imageKey);
         }
