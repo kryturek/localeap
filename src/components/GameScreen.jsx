@@ -8,6 +8,8 @@ const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN;
 const GameScreen = ({setCurrentCoordinates}) => {
   const viewerRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [debugInfo, setDebugInfo] = useState({});
 
   // Function to generate random coordinates within a given range.
   const getRandomCoordinates = () => {
@@ -103,21 +105,46 @@ const GameScreen = ({setCurrentCoordinates}) => {
     }
   }, [setCurrentCoordinates]);
 
+  useEffect(() => {
+    console.log("Mapillary token available:", !!MAPILLARY_TOKEN);
+    if (!MAPILLARY_TOKEN) {
+      console.error("WARNING: No Mapillary token found!");
+    }
+  }, []);
+
   return (
-    <div className="game-screen h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">
-      <div className="street-view-container w-screen h-full bg-black flex items-center justify-center">
-          <div
-            id='mly'
-            className="object-cover h-full w-full"
-          >
-            {loading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="loader"></div>
-              </div>
-            )}
-          </div>
+    <>
+      <style>
+        {`
+          .mapillary-js-dom {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+          }
+          .mapillary-js-canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+          }
+        `}
+      </style>
+      <div className="game-screen h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">
+        <div className="street-view-container w-screen h-full bg-black flex items-center justify-center">
+            <div
+              id='mly'
+              className="object-cover h-full w-full"
+            >
+              {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="loader"></div>
+                </div>
+              )}
+            </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
