@@ -9,7 +9,6 @@ const GameScreen = ({setCurrentCoordinates}) => {
   const viewerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [debugInfo, setDebugInfo] = useState({});
 
   // Function to generate random coordinates within a given range.
   const getRandomCoordinates = () => {

@@ -1,0 +1,13 @@
+.mapillary-js-dom {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mapillary-js-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
