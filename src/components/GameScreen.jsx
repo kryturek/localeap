@@ -3,9 +3,12 @@ import axios from 'axios';
 import { Viewer } from 'mapillary-js';
 import '../assets/loader.css'
 
+console.log("[FLOW] 1. Module loading");
 const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN;
+console.log("[FLOW] 2. MAPILLARY_TOKEN:", !!MAPILLARY_TOKEN);
 
 const GameScreen = ({setCurrentCoordinates}) => {
+  console.log("[FLOW] 3. Component function executing");
   const viewerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +21,10 @@ const GameScreen = ({setCurrentCoordinates}) => {
   };
 
   useEffect(() => {
+    console.log("[FLOW] 4. Main useEffect running");
+    
     const fetchRandomImageAndInitViewer = async () => {
+      console.log("[FLOW] 5. fetchRandomImageAndInitViewer started");
       setLoading(true);
       const maxAttempts = 100;
       let attempt = 0;
@@ -26,10 +32,12 @@ const GameScreen = ({setCurrentCoordinates}) => {
       let imageKey = null;
       const delta = 5; // size of bbox (adjust as needed)
 
+      console.log("[FLOW] 6. Starting search loop");
       while (!found && attempt < maxAttempts) {
         attempt++;
         const { lat, lon } = getRandomCoordinates();
         const bbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
+        console.log(`[FLOW] 7. Attempt ${attempt}: Fetching with bbox ${bbox}`);
 
         try {
           const res = await axios.get(
@@ -44,73 +52,124 @@ const GameScreen = ({setCurrentCoordinates}) => {
               },
             }
           );
+          console.log(`[FLOW] 8. Got API response for attempt ${attempt}`);
 
           if (res.data.data && res.data.data.length > 0) {
             const imageData = res.data.data[0];
             imageKey = imageData.id;
             found = true;
-            console.log(imageData.computed_geometry.coordinates);
+            console.log("[FLOW] 9. Found image:", imageKey, imageData.computed_geometry.coordinates);
             setCurrentCoordinates({
               lat: imageData.computed_geometry.coordinates[1],
               lon: imageData.computed_geometry.coordinates[0],
             });
           } else {
-            console.error(`Attempt ${attempt}: No images found for bbox ${bbox}`);
+            console.log(`[FLOW] 9a. No images found for bbox ${bbox}`);
           }
         } catch (err) {
-          console.error(`Attempt ${attempt}: Error fetching image:`, err);
+          console.log(`[FLOW] 9b. Error fetching image:`, err.message);
         }
       }
 
+      console.log("[FLOW] 10. Search loop ended, found:", found);
       if (!found) {
-        console.error('No imagery found after maximum attempts.');
+        console.log('[FLOW] 11a. No imagery found after maximum attempts.');
       } else {
-        if( !viewerRef.current ) {
-          viewerRef.current = new Viewer({
-            accessToken: MAPILLARY_TOKEN,
-            container: 'mly',
-            imageKey: imageKey,
-            component: {
-              cover: false,
-              direction: false,
-              sequence: false,
-              zoom: false,
-              attribution: false,
-              bearing: false,
-              spatial: false,
-              tag: false,
-              popup: false,
-              image: true,
-              navigation: false,
-              cache: true,
-              keyboard: false
-            }
-          });
+        console.log('[FLOW] 11b. Initializing viewer with key:', imageKey);
+        
+        if (!viewerRef.current) {
+          console.log("[FLOW] 12. Creating new viewer instance");
+          try {
+            viewerRef.current = new Viewer({
+              accessToken: MAPILLARY_TOKEN,
+              container: 'mly',
+              imageKey: imageKey,
+              component: {
+                cover: false,
+                direction: false,
+                sequence: false,
+                zoom: false,
+                attribution: false,
+                bearing: false,
+                spatial: false,
+                tag: false,
+                popup: false,
+                image: true,
+                navigation: false,
+                cache: true,
+                keyboard: false
+              }
+            });
+            console.log("[FLOW] 13. Viewer instance created:", !!viewerRef.current);
+            
+            // Add event listeners to track if they fire
+            viewerRef.current.on('load', () => {
+              console.log("[FLOW] 14a. VIEWER LOAD EVENT FIRED!");
+            });
+            
+            viewerRef.current.on('error', (err) => {
+              console.log("[FLOW] 14b. VIEWER ERROR EVENT:", err);
+            });
+            
+          } catch (err) {
+            console.log("[FLOW] 13a. ERROR creating viewer:", err.message);
+          }
         } else {
-          viewerRef.current.moveTo(imageKey);
+          console.log("[FLOW] 12a. Moving existing viewer to:", imageKey);
+          try {
+            viewerRef.current.moveTo(imageKey);
+            console.log("[FLOW] 13b. Moved viewer successfully");
+          } catch (err) {
+            console.log("[FLOW] 13c. ERROR moving viewer:", err.message);
+          }
         }
       }
 
+      console.log("[FLOW] 15. Setting loading to false");
       setLoading(false);
     };
 
     fetchRandomImageAndInitViewer();
 
     return () => {
+      console.log("[FLOW] 16. Cleanup function running");
       if(viewerRef.current) {
-        viewerRef.current.remove();
-        viewerRef.current = null;
+        try {
+          console.log("[FLOW] 17. Removing viewer");
+          viewerRef.current.remove();
+          viewerRef.current = null;
+          console.log("[FLOW] 18. Viewer removed successfully");
+        } catch (err) {
+          console.log("[FLOW] 18a. ERROR removing viewer:", err.message);
+        }
       }
     }
   }, [setCurrentCoordinates]);
 
   useEffect(() => {
-    console.log("Mapillary token available:", !!MAPILLARY_TOKEN);
-    if (!MAPILLARY_TOKEN) {
-      console.error("WARNING: No Mapillary token found!");
-    }
+    console.log("[FLOW] 19. CSS check effect running");
+    // Check if CSS is loaded
+    setTimeout(() => {
+      const cssLoaded = Array.from(document.styleSheets).some(sheet => {
+        try {
+          return sheet.href && sheet.href.includes('mapillary');
+        } catch (e) {
+          return false;
+        }
+      });
+      console.log("[FLOW] 20. Mapillary CSS loaded:", cssLoaded);
+      
+      // Check if mly container exists
+      const container = document.getElementById('mly');
+      console.log("[FLOW] 21. mly container exists:", !!container);
+      
+      // Check if any mapillary DOM elements exist
+      const mapillaryElements = document.querySelectorAll('.mapillary-js-dom');
+      console.log("[FLOW] 22. mapillary-js-dom elements:", mapillaryElements.length);
+    }, 1000);
   }, []);
 
+  console.log("[FLOW] 23. Rendering component");
   return (
     <>
       <style>
@@ -134,6 +193,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
             <div
               id='mly'
               className="object-cover h-full w-full"
+              onLoad={() => console.log("[FLOW] 24. mly div onLoad event")}
             >
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -147,4 +207,5 @@ const GameScreen = ({setCurrentCoordinates}) => {
   );
 };
 
+console.log("[FLOW] 0. Module evaluated");
 export default GameScreen;
