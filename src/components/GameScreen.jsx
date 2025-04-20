@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import axios from 'axios';
 import { Viewer } from 'mapillary-js';
 import '../assets/loader.css'
@@ -20,7 +20,7 @@ const GameScreen = ({setCurrentCoordinates}) => {
     return { lat, lon };
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log("[FLOW] 4. Main useEffect running");
     
     const fetchRandomImageAndInitViewer = async () => {
@@ -80,36 +80,43 @@ const GameScreen = ({setCurrentCoordinates}) => {
         if (!viewerRef.current) {
           console.log("[FLOW] 12. Creating new viewer instance");
           try {
-            viewerRef.current = new Viewer({
-              accessToken: MAPILLARY_TOKEN,
-              container: 'mly',
-              imageKey: imageKey,
-              component: {
-                cover: false,
-                direction: false,
-                sequence: false,
-                zoom: false,
-                attribution: false,
-                bearing: false,
-                spatial: false,
-                tag: false,
-                popup: false,
-                image: true,
-                navigation: false,
-                cache: true,
-                keyboard: false
-              }
-            });
-            console.log("[FLOW] 13. Viewer instance created:", !!viewerRef.current);
+            const mlyContainer = document.getElementById('mly');
+            console.log("[FLOW] 12a. mlyContainer element:", !!mlyContainer);
             
-            // Add event listeners to track if they fire
-            viewerRef.current.on('load', () => {
-              console.log("[FLOW] 14a. VIEWER LOAD EVENT FIRED!");
-            });
-            
-            viewerRef.current.on('error', (err) => {
-              console.log("[FLOW] 14b. VIEWER ERROR EVENT:", err);
-            });
+            // Add a small delay to ensure the DOM is fully painted
+            setTimeout(() => {
+              console.log("[FLOW] 12b. Creating viewer after delay");
+              viewerRef.current = new Viewer({
+                accessToken: MAPILLARY_TOKEN,
+                container: mlyContainer,
+                imageKey: imageKey,
+                component: {
+                  cover: false,
+                  direction: false,
+                  sequence: false,
+                  zoom: false,
+                  attribution: false,
+                  bearing: false,
+                  spatial: false,
+                  tag: false,
+                  popup: false,
+                  image: true,
+                  navigation: false,
+                  cache: true,
+                  keyboard: false
+                }
+              });
+              console.log("[FLOW] 13. Viewer instance created:", !!viewerRef.current);
+              
+              // Add event listeners
+              viewerRef.current.on('load', () => {
+                console.log("[FLOW] 14a. VIEWER LOAD EVENT FIRED!");
+              });
+              
+              viewerRef.current.on('error', (err) => {
+                console.log("[FLOW] 14b. VIEWER ERROR EVENT:", err);
+              });
+            }, 100); // Just 100ms delay is enough
             
           } catch (err) {
             console.log("[FLOW] 13a. ERROR creating viewer:", err.message);
