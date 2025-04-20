@@ -57,7 +57,13 @@ function App() {
     <>
     {gameStarted ? (
       <>
-      <GameScreen key={`game-${gameKey}`} setCurrentCoordinates={setCurrentCoordinates} />
+      <GameScreen
+        key={`game-${gameKey}`}
+        setCurrentCoordinates={(coords) => {
+          console.log("[App] Setting current coordinates:", coords);
+          setCurrentCoordinates(coords);
+        }}
+      />
       <ExpandableMap key={`map-${gameKey}`} setGuessMarker={setGuessMarker} />
       {showResultDialog && (
         <ResultDialog 

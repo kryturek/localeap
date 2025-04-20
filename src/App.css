@@ -11,3 +11,12 @@
   opacity: 0.7;
   background-color: lightgray;
 }
+
+#mapillary-viewer .mapillary-dom-renderer {
+  position: absolute !important;
+  width: 100% !important;
+  min-width: 300px !important;
+  height: 100% !important;
+  min-height: 300px !important;
+  background-color: #000 !important;
+}
