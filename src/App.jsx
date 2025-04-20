@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import ExpandableMap from './components/ExpandableMap'
 import GameScreen from './components/GameScreen'
+// import NewGameScreen from './components/NewGameScreen'
 import StartScreen from './components/StartScreen'
 import ResultDialog from './components/ResultDialog'
 
