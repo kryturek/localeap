@@ -52,7 +52,7 @@ const GameScreen = ({ setCurrentCoordinates }) => {
   // Callback ref function to manage the DOM node and initialize the Viewer
   const nodeRef = useCallback(
     async (node) => {
-      console.log('[FLOW] nodeRef called with node:', node);
+      console.log('[DEBUG] nodeRef called with node:', node);
       if (node) {
         // If the node is mounted
         if (!imageDataRef.current) {
@@ -73,11 +73,14 @@ const GameScreen = ({ setCurrentCoordinates }) => {
           lon: imageData.computed_geometry.coordinates[0],
         });
 
+        console.log('[DEBUG] mly container dimensions:', node.offsetWidth, node.offsetHeight);
+
         // Initialize the Viewer
         viewerRef.current = new Viewer({
           accessToken: MAPILLARY_TOKEN,
           container: node, 
           imageKey: imageData.id,
+          // imageKey: 277755748254846,
           component: {
             cover: false,
             direction: false,
@@ -94,6 +97,9 @@ const GameScreen = ({ setCurrentCoordinates }) => {
             keyboard: false,
           },
         });
+
+        console.log('[DEBUG] Viewer initialized:', viewerRef.current);
+        console.log('[DEBUG] Image Data:', imageData.id);
 
         setLoading(false); // Set loading to false once the Viewer is ready
       } else {
@@ -130,6 +136,10 @@ const GameScreen = ({ setCurrentCoordinates }) => {
             width: 100%;
             height: 100%;
             background-color: #000;
+          }
+          #mly {
+            width: 100%;
+            height: 100%;
           }
         `}
       </style>
